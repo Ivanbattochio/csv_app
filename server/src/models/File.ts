@@ -1,4 +1,7 @@
 export type File = {
-	id: string
+	numberOfLines: number
+}
+
+export type FileDTO = {
 	numberOfLines: number
 }

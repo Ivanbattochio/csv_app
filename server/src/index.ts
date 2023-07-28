@@ -5,12 +5,16 @@ import { mongodbConnect } from "./config/database"
 import fileRouter from "./routes/fileRoutes"
 import userRouter from "./routes/userRoutes"
 import { startCsvLinesCollection } from "./repositories/CsvLineMongoDbRepository"
+import { startFileCollection } from "./repositories/fileMongoDbRepository"
 
 const main = () => {
 	mongodbConnect()
 		.then(() => {
 			let port = process.env.PORT
+
 			startCsvLinesCollection()
+			startFileCollection()
+
 			let app = express()
 
 			app.use(
