@@ -2,6 +2,7 @@ import { Container, Typography, TextField, Box, Button, Snackbar, Alert } from '
 import { SyntheticEvent, useState } from 'react'
 import { CsvLine } from './models/CsvLine'
 import { CsvDataComponent } from './components/CsvDataComponent'
+import axios from 'axios'
 
 function App() {
     const [paginatedCsvData, paginatedCsvDataSet] = useState<CsvLine[]>([])
@@ -17,6 +18,7 @@ function App() {
     }
 
     const closeSnackBar = () => {
+        alertTypeSet('info')
         alertMessageSet('')
         notificationOpenSet(false)
     }
@@ -37,6 +39,21 @@ function App() {
             openNotification('You can only submit one CSV at a time!', 'error')
             return
         }
+
+        const file = filesArray[0]
+
+        const formData = new FormData()
+
+        formData.append('file', file)
+
+        axios
+            .post('http://localhost:3000/api/files', formData)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     return (
@@ -78,7 +95,7 @@ function App() {
                 </label>
             </Box>
 
-            <Snackbar open={notificationOpen} autoHideDuration={6000} onClose={closeSnackBar} message={alertMessage}>
+            <Snackbar open={notificationOpen} autoHideDuration={6000} onClose={closeSnackBar}>
                 <Alert severity={alertType}>{alertMessage}</Alert>
             </Snackbar>
         </Container>
