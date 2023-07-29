@@ -1,5 +1,10 @@
 export type CsvLine = {
     name: string
+    city: string
+    country: string
+    favorite_sport: string
+    fileId: string
+    id: number
 }
 
 export type PostFileResponse = {

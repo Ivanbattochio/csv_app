@@ -61,7 +61,25 @@ function App() {
         textFieldSet(target.value)
     }
 
-    const fetchFileData = () => {}
+    const fetchFileData = (fileId: string | null) => {
+        axios
+            .get<CsvLine[]>('http://localhost:3000/api/users', {
+                params: {
+                    fileId: fileId ? fileId : currentFileId,
+                },
+            })
+            .then((res) => {
+                const lines = res.data
+
+                paginatedCsvDataSet(lines)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+            .finally(() => {
+                loadingCsvSet(false)
+            })
+    }
 
     const uploadCsv = (event: SyntheticEvent) => {
         const target = event.target as HTMLInputElement
@@ -95,7 +113,7 @@ function App() {
                 }
                 currentFileIdSet(fileId)
                 fetchAllFiles()
-                fetchFileData()
+                fetchFileData(fileId)
             })
             .catch((error) => {
                 console.log(error)
@@ -119,7 +137,11 @@ function App() {
                     CSV UPLOADER
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', width: '100vh' }}>
-                    <form onSubmit={fetchFileData}>
+                    <form
+                        onSubmit={() => {
+                            fetchFileData(null)
+                        }}
+                    >
                         <TextField
                             id="outlined-basic"
                             label="Search CSV Fields"
@@ -129,7 +151,9 @@ function App() {
                             onChange={updateTextFieldState}
                         />
                     </form>
-                    <CsvDataComponent paginatedData={paginatedCsvData}></CsvDataComponent>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                        <CsvDataComponent paginatedData={paginatedCsvData}></CsvDataComponent>
+                    </Box>
 
                     <input
                         accept=".csv"

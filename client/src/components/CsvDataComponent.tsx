@@ -10,6 +10,13 @@ export const CsvDataComponent = ({ paginatedData }: { paginatedData: CsvLine[] }
             </Box>
         )
     } else {
-        return <Typography>ssajkhdjkas</Typography>
+        return paginatedData.map((data) => (
+            <Box sx={{ backgroundColor: '#565554', borderRadius: '10px', display: 'flex', gap: '5px' }}>
+                <h4>{data.name}</h4>
+                <h4>{data.city}</h4>
+                <h4>{data.country}</h4>
+                <h4>{data.favorite_sport}</h4>
+            </Box>
+        ))
     }
 }
