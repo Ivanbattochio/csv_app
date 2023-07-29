@@ -1,11 +1,15 @@
+import { v4 as uuidv4 } from "uuid"
+import { ObjectId } from "mongodb"
 import { insertManyCsvLines } from "../repositories/CsvLineMongoDbRepository"
 import { CsvLineDTO } from "../models/CsvLine"
 import { Readable } from "stream"
 import readline from "readline"
 import { createLineObject, sleep } from "../utils/utils"
-import { v4 as uuidv4 } from "uuid"
 
-export const insertFilesLinesIntoDb = async (file: Express.Multer.File) => {
+export const insertFilesLinesIntoDb = async (
+	file: Express.Multer.File,
+	fileId: ObjectId
+) => {
 	const { buffer } = file
 	const readableObject = new Readable()
 	readableObject.push(buffer)
@@ -25,10 +29,10 @@ export const insertFilesLinesIntoDb = async (file: Express.Multer.File) => {
 	let insertedDocuments = 0
 
 	const linesArray: CsvLineDTO[] = []
-	const fileId = uuidv4()
+	const fileIdString = fileId.toString()
 
 	for await (const line of iterator) {
-		const lineObject = createLineObject(line, linesIds, fileId)
+		const lineObject = createLineObject(line, linesIds, fileIdString)
 		if (!lineObject) {
 			unformattedLinesIndex.push(currentLine)
 		} else {

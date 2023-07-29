@@ -10,7 +10,7 @@ export const startFileCollection = () => {
 	collection = database.collection("files")
 }
 
-export const insertFile: (file: File) => Promise<FileDTO> = async (file) => {
+export const insertFile: (file: FileDTO) => Promise<File> = async (file) => {
 	try {
 		await collection.insertOne(file)
 		return file

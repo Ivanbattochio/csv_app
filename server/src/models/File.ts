@@ -1,7 +1,10 @@
-export type File = {
-	numberOfLines: number
-}
+import { ObjectId } from "mongodb"
 
 export type FileDTO = {
-	numberOfLines: number
+	name: string
+}
+
+export type File = {
+	name: string
+	_id: ObjectId
 }
