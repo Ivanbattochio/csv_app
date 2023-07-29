@@ -32,3 +32,12 @@ export const insertManyCsvLines: (
 		return error
 	}
 }
+export const getAllLinesFromCsv: (fileId: string) => Promise<File[]> = async (
+	fileId
+) => {
+	try {
+		return await collection.find({ fileId: fileId }).toArray()
+	} catch (error: any) {
+		return error
+	}
+}
