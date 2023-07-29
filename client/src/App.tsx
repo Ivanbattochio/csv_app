@@ -1,11 +1,14 @@
-import { Container, Typography, TextField, Box, Button, Snackbar, Alert } from '@mui/material'
+import axios from 'axios'
+import { Container, Typography, TextField, Box, Button, Snackbar, Alert, CircularProgress } from '@mui/material'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
 import { SyntheticEvent, useState } from 'react'
 import { CsvLine } from './models/CsvLine'
 import { CsvDataComponent } from './components/CsvDataComponent'
-import axios from 'axios'
 
 function App() {
     const [paginatedCsvData, paginatedCsvDataSet] = useState<CsvLine[]>([])
+
+    const [loadingCsv, loadingCsvSet] = useState<boolean>(false)
 
     const [notificationOpen, notificationOpenSet] = useState<boolean>(false)
     const [alertMessage, alertMessageSet] = useState<string>('')
@@ -41,10 +44,10 @@ function App() {
         }
 
         const file = filesArray[0]
-
         const formData = new FormData()
-
         formData.append('file', file)
+
+        loadingCsvSet(true)
 
         axios
             .post('http://localhost:3000/api/files', formData)
@@ -53,6 +56,9 @@ function App() {
             })
             .catch((error) => {
                 console.log(error)
+            })
+            .finally(() => {
+                loadingCsvSet(false)
             })
     }
 
@@ -83,14 +89,24 @@ function App() {
                     <Button
                         variant="contained"
                         sx={{
+                            display: 'flex',
                             borderRadius: '10px',
-                            width: '100%',
+                            width: '250px',
                             backgroundColor: '#1F3F36',
                             color: '#ACA9BB',
+                            gap: '5px',
+                            alignItems: 'center',
                         }}
                         component="span"
                     >
-                        Upload new Csv
+                        {loadingCsv ? (
+                            <CircularProgress size={24} />
+                        ) : (
+                            <>
+                                <FileUploadIcon />
+                                Upload new Csv
+                            </>
+                        )}
                     </Button>
                 </label>
             </Box>
