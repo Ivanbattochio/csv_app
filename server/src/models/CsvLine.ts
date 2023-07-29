@@ -1,5 +1,6 @@
 export type CsvLine = {
-	_id: string
+	fileId: string
+	id: number
 	name: string
 	city: string
 	country: string

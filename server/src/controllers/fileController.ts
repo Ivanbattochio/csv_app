@@ -1,17 +1,15 @@
 import { NextFunction, Request, Response } from "express"
-import { insertCsvLine } from "../repositories/CsvLineMongoDbRepository"
-import { CsvLineDTO } from "../models/CsvLine"
+import { insertFilesLinesIntoDb } from "../services/fileService"
 
 export const post = async (
-	req: Request<{}, {}, CsvLineDTO>,
+	req: Request<{}, {}, {}>,
 	res: Response,
 	next: NextFunction
 ) => {
-	const csvLine = req.body
 	try {
-		const result = await insertCsvLine(csvLine)
+		const { file } = req
 
-		return res.status(200).json(result)
+		return res.status(202).json(await insertFilesLinesIntoDb(file!))
 	} catch (error: any) {
 		return next(error)
 	}

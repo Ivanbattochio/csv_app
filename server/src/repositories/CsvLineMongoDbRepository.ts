@@ -20,3 +20,15 @@ export const insertCsvLine: (csvLine: CsvLineDTO) => Promise<CsvLine> = async (
 		return error
 	}
 }
+
+export const insertManyCsvLines: (
+	csvLines: CsvLineDTO[]
+) => Promise<number> = async (csvLines) => {
+	try {
+		const result = await collection.insertMany(csvLines)
+
+		return result.insertedCount
+	} catch (error: any) {
+		return error
+	}
+}
