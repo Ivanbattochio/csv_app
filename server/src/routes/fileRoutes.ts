@@ -1,5 +1,5 @@
 import express from "express"
-import { post } from "../controllers/fileController"
+import { get, post } from "../controllers/fileController"
 import { validate } from "../yup/validator"
 import { FileSchema } from "../yup/FileSchema"
 import { multerObject } from "../config/multer"
@@ -12,5 +12,7 @@ fileRouter.post(
 	validate(FileSchema),
 	post
 )
+
+fileRouter.get("/files", get)
 
 export default fileRouter

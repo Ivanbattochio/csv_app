@@ -18,3 +18,11 @@ export const insertFile: (file: FileDTO) => Promise<File> = async (file) => {
 		return error
 	}
 }
+
+export const getAllFiles: () => Promise<File[]> = async () => {
+	try {
+		return await collection.find({}).toArray()
+	} catch (error: any) {
+		return error
+	}
+}
